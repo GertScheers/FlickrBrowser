@@ -7,9 +7,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e52eea54-3fec-429b-919a-5ed39ef61439" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/gitje/flickrbrowser/GetRawData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/gitje/flickrbrowser/GetRawData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/gitje/flickrbrowser/GetRawData.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/gitje/flickrbrowser/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/gitje/flickrbrowser/MainActivity.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -127,5 +129,23 @@
       <updated>1602352297229</updated>
     </task>
     <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="751" y="236" key="#com.intellij.ide.util.MemberChooser" timestamp="1603125994856">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="751" y="236" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1603125994856" />
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1603128893009">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1603128893009" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1603128892440">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="498" height="446" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1603128892440" />
+    <state x="664" y="324" key="com.intellij.ide.util.TipDialog" timestamp="1603125946130">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="664" y="324" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1603125946130" />
   </component>
 </project>

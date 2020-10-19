@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
+        val getRawData = GetRawData()
+        getRawData.execute("https://api.flickr.com/services/feeds/photos_public.gne?tags=android,oreo&format=json&nojsoncallback=1")
 //        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
@@ -43,7 +45,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /*companion object {
-        private const val TAG = "MainActivity"
-    }*/
+    fun onDownloadComplete(data: String, status: DownloadStatus) {
+        if (status == DownloadStatus.OK)
+            Log.d(TAG, "OnDownloadComplete called, data is $data")
+        else
+            Log.d(TAG, "OnDownloadComplete failed with status $status. Error message is $data")
+
+    }
 }
