@@ -10,20 +10,24 @@ enum class DownloadStatus {
     OK, IDLE, NOT_INITIALISED, FAILED_OR_EMPTY, PREMISSIONS_ERROR, ERROR
 }
 
-class GetRawData : AsyncTask<String, Void, String>() {
+class GetRawData(private val listener: OnDownloadComplete) : AsyncTask<String, Void, String>() {
     private val TAG = "GetRawData"
     private var downloadStatus = DownloadStatus.IDLE
 
+    interface OnDownloadComplete {
+        fun onDownloadComplete(data: String, status: DownloadStatus)
+    }
+
     override fun doInBackground(vararg params: String?): String {
-        if(params[0] == null){
+        if (params[0] == null) {
             downloadStatus = DownloadStatus.NOT_INITIALISED
             return "No URL specified"
         }
 
-        try{
+        try {
             downloadStatus = DownloadStatus.OK
             return URL(params[0]).readText()
-        } catch(e: Exception){
+        } catch (e: Exception) {
             val errorMessage = when (e) {
                 is MalformedURLException -> {
                     downloadStatus = DownloadStatus.NOT_INITIALISED
@@ -47,7 +51,8 @@ class GetRawData : AsyncTask<String, Void, String>() {
         }
     }
 
-    override fun onPostExecute(result: String?) {
+    override fun onPostExecute(result: String) {
         Log.d(TAG, "onPostExecute called: Parameter is $result")
+        listener.onDownloadComplete(result, downloadStatus)
     }
 }
