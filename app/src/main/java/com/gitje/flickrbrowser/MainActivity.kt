@@ -1,5 +1,7 @@
 package com.gitje.flickrbrowser
 
+import android.location.Criteria
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -10,7 +12,8 @@ import android.view.MenuItem
 
 private const val TAG = "MainActivity"
 
-class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete {
+class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete,
+    GetFlickrJsonData.OnDataAvailable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "OnCreate Called")
@@ -18,10 +21,35 @@ class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete {
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
+        val url = createUri(
+            "https://api.flickr.com/services/feeds/photos_public.gne",
+            "android,oreo",
+            "en-us",
+            true
+        )
         val getRawData = GetRawData(this)
-        getRawData.execute("https://api.flickr.com/services/feeds/photos_public.gne?tags=android,oreo&format=json&nojsoncallback=1")
+        getRawData.execute(url)
 
         Log.d(TAG, "OnCreate ends")
+    }
+
+    private fun createUri(
+        baseURL: String,
+        searchCriteria: String,
+        lang: String,
+        matchAll: Boolean
+    ): String {
+        Log.d(TAG, "createURI starts")
+
+        return Uri.parse(baseURL)
+            .buildUpon()
+            .appendQueryParameter("tags", searchCriteria)
+            .appendQueryParameter("tagmode", if (matchAll) "All" else "ANY")
+            .appendQueryParameter("language", lang)
+            .appendQueryParameter("format", "json")
+            .appendQueryParameter("nojsoncallback", "1")
+            .build()
+            .toString()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -43,10 +71,22 @@ class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete {
     }
 
     override fun onDownloadComplete(data: String, status: DownloadStatus) {
-        if (status == DownloadStatus.OK)
-            Log.d(TAG, "OnDownloadComplete called, data is $data")
-        else
-            Log.d(TAG, "OnDownloadComplete failed with status $status. Error message is $data")
+        if (status == DownloadStatus.OK) {
+            Log.d(TAG, "OnDownloadComplete called")
 
+            val getFlickrJsonData = GetFlickrJsonData(this)
+            getFlickrJsonData.execute(data)
+        } else
+            Log.d(TAG, "OnDownloadComplete failed with status $status. Error message is $data")
+    }
+
+    override fun onDataAvailable(data: List<Photo>) {
+        Log.d(TAG, "onDataAvailable called: data is $data")
+
+        Log.d(TAG, "onDataAvailable ends")
+    }
+
+    override fun onError(exception: Exception) {
+        Log.d(TAG, "onError called with ${exception.message}")
     }
 }
