@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.PicassoProvider
 import kotlinx.android.synthetic.main.browse.view.*
 
 class FlickrImageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var thumbnail : ImageView = view.findViewById(R.id.thumbnail)
-    var totme : TextView = view.findViewById(R.id.title)
+    var title : TextView = view.findViewById(R.id.title)
 }
 
 class FlickrRecyclerViewAdapter(private var photoList: List<Photo>) : RecyclerView.Adapter<FlickrImageViewHolder>() {
@@ -24,7 +26,15 @@ private val TAG = "FlickrRecyclerAdapter"
     }
 
     override fun onBindViewHolder(holder: FlickrImageViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        //Called by the layout manager when it wants new data in an existing view
+        val photoItem = photoList[position]
+        Log.d(TAG, "onBindViewHolder: ${photoItem.title} --> $position")
+        Picasso.get().load(photoItem.image)
+            .error(R.drawable.placeholder)
+            .placeholder(R.drawable.placeholder)
+            .into(holder.thumbnail)
+
+        holder.title.text = photoItem.title
     }
 
     override fun getItemCount(): Int {
