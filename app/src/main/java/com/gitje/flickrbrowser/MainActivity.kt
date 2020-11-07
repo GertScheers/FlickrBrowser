@@ -1,5 +1,6 @@
 package com.gitje.flickrbrowser
 
+import android.content.Intent
 import android.location.Criteria
 import android.net.Uri
 import android.os.Bundle
@@ -9,12 +10,14 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete,
-    GetFlickrJsonData.OnDataAvailable {
+class MainActivity : BaseActivity(), GetRawData.OnDownloadComplete,
+    GetFlickrJsonData.OnDataAvailable, RecyclerItemClickListener.OnRecyclerClickListener {
 
     private val TAG = "MainActivity"
 
@@ -24,9 +27,10 @@ class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete,
         Log.d(TAG, "OnCreate Called")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        activateToolbar(false)
 
         itemList_view.layoutManager = LinearLayoutManager(this)
+        itemList_view.addOnItemTouchListener(RecyclerItemClickListener(this, itemList_view, this))
         itemList_view.adapter = flickrRecyclerViewAdapter
 
         val url = createUri(
@@ -96,5 +100,21 @@ class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete,
 
     override fun onError(exception: Exception) {
         Log.d(TAG, "onError called with ${exception.message}")
+    }
+
+    override fun onItemClick(view: View, position: Int) {
+        Log.d(TAG, "onItemClick: starts")
+        Toast.makeText(this, "Normal tap at position $position", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onItemLongClick(view: View, position: Int) {
+        Log.d(TAG, "onItemLongClick: starts")
+        //Toast.makeText(this, "Long tap at position $position", Toast.LENGTH_SHORT).show()
+        val photo = flickrRecyclerViewAdapter.getPhoto(position)
+        if (photo != null) {
+            val intent = Intent(this, PhotoDetailsActivity::class.java)
+            intent.putExtra(PHOTO_TRANSFER, photo)
+            startActivity(intent)
+        }
     }
 }

@@ -1,16 +1,18 @@
 package com.gitje.flickrbrowser
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : BaseActivity() {
+    private val TAG = "SearchActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        activateToolbar(true)
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
