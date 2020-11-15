@@ -1,20 +1,17 @@
 package com.gitje.flickrbrowser
 
 import android.content.Intent
-import android.location.Criteria
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.content_main.*
+import androidx.preference.PreferenceManager
+
 
 class MainActivity : BaseActivity(), GetRawData.OnDownloadComplete,
     GetFlickrJsonData.OnDataAvailable, RecyclerItemClickListener.OnRecyclerClickListener {
@@ -77,7 +74,10 @@ class MainActivity : BaseActivity(), GetRawData.OnDownloadComplete,
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_search -> {
+                startActivity(Intent(this, SearchActivity::class.java))
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -115,6 +115,25 @@ class MainActivity : BaseActivity(), GetRawData.OnDownloadComplete,
             val intent = Intent(this, PhotoDetailsActivity::class.java)
             intent.putExtra(PHOTO_TRANSFER, photo)
             startActivity(intent)
+        }
+    }
+
+    override fun onResume() {
+        Log.d(TAG, "onResume starts")
+        super.onResume()
+
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val queryResult = sharedPref.getString(FLICKR_QUERY, "")
+
+        if(queryResult?.isNotEmpty() == true){
+            val url = createUri(
+                "https://api.flickr.com/services/feeds/photos_public.gne",
+                queryResult,
+                "en-us",
+                true
+            )
+            val getRawData = GetRawData(this)
+            getRawData.execute(url)
         }
     }
 }
